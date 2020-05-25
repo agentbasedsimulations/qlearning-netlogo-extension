@@ -16,5 +16,7 @@ class Extension extends DefaultClassManager {
     manager.addPrimitive("get-qtable", new GetQTable)
     manager.addPrimitive("random-seed", new RandomSeed)
     manager.addPrimitive("decay-epsilon", new DecayEpsilon)
+    manager.addPrimitive("act", new Act)
+    manager.addPrimitive("learn", new Learn)
   }
 }

@@ -137,3 +137,106 @@ class DecayEpsilon extends Command {
 }
 
 
+class Act extends Command {
+  override def getSyntax: Syntax = Syntax.commandSyntax()
+
+  override def perform(args: Array[Argument], context: Context): Unit =  {
+    val optAgent : Option[Agent] = Session.instance().getAgent(context.getAgent)
+    if(optAgent.isEmpty) {
+      throw new ExtensionException("Agent " + context.getAgent.id + " isn't a learner agent")
+    } else {
+      val agent: Agent = optAgent.get
+
+      if (agent.actions.isEmpty)
+        throw new ExtensionException("No action has been defined for agent " + context.getAgent.id)
+
+      if (agent.learningRate == -1)
+        throw new ExtensionException("No learning rate has been defined for agent " + context.getAgent.id)
+
+      if (agent.discountFactor == -1)
+        throw new ExtensionException("No discount factor has been defined for agent " + context.getAgent.id)
+
+      if (agent.actionSelection.method == "")
+        throw new ExtensionException("No action selection method has been defined for agent " + context.getAgent.id)
+
+      val previousState =  agent.getState(context)
+      agent.previousState = previousState
+      val actualState: String = agent.getState(context)
+      var actualQlist: List[Double] = null
+      val optQlist: Option[List[Double]] = agent.qTable.get(actualState)
+
+      if (optQlist.isEmpty) { //Estado não visitado anteriormente
+        actualQlist = List.fill(agent.actions.length)(0)
+        agent.qTable += (actualState -> actualQlist)
+      } else {
+        actualQlist = optQlist.get
+      }
+
+      val actionActualState: Int = agent.actionSelection.getAction(actualQlist, context)
+      agent.actionActualState = actionActualState
+
+      agent.actions(actionActualState).perform(context, Array(AnyRef))
+    }
+  }
+}
+
+class Learn extends Command {
+  override def getSyntax: Syntax = Syntax.commandSyntax(
+    right = List(BooleanType | RepeatableType),
+    defaultOption = Some(0),
+    minimumOption = Some(0)
+  )
+
+  override def perform(args: Array[Argument], context: Context): Unit =  {
+    val optAgent : Option[Agent] = Session.instance().getAgent(context.getAgent)
+    val agent: Agent = optAgent.get
+    val actualState: String = agent.getState(context)
+    var actualQlist: List[Double] = null
+
+    val previousState = agent.previousState
+    val optQlist: Option[List[Double]] = agent.qTable.get(previousState)
+
+    if (optQlist.isEmpty) { //Estado não visitado anteriormente
+      actualQlist = List.fill(agent.actions.length)(0)
+      agent.qTable += (actualState -> actualQlist)
+    } else {
+      actualQlist = optQlist.get
+    }
+    val actionActualState: Int = agent.actionActualState
+
+    val qValueActualState : Double = actualQlist(actionActualState)
+    val reward : Double = try agent.rewardFunc.report(context, Array(AnyRef)).asInstanceOf[Double]
+    catch {
+      case _ : NullPointerException =>
+        throw new ExtensionException("No reward function for agent " + context.getAgent.id + " was defined")
+    }
+    val newState : String = agent.getState(context)
+    val newStateBestAction : Double = agent.getBestActionExpectedReward(newState)
+
+    val newQvalue : Double =
+      qValueActualState + (agent.learningRate * (reward + (agent.discountFactor * newStateBestAction) - qValueActualState))
+
+    val newQlist : List[Double] = actualQlist.patch(actionActualState, List(newQvalue), 1)
+    if(previousState != null) {
+      agent.qTable += (previousState -> newQlist)
+    }
+
+    if(args.length > 0 && args(0).getBooleanValue) {
+      val print : String =
+          "S: estado, R: recompensa, A: ação, t: tempo \n" +
+          "S(t-1): " + previousState + "\n" +
+          "A(t-1): " + actionActualState + "\n" +
+          "Q(t-1): " + actualQlist.toString() + "\n" +
+          "R(t): " + reward + "\n" +
+          "S(t): " + newState + "\n" +
+          "A(t): " + newStateBestAction + "\n" +
+          "Q(t): " + newQlist + "\n" +
+          "epsilon: " + agent.actionSelection.epsilon +
+          "\n-----------------------------"
+
+      context.workspace.outputObject(
+        print , null, true, false, Normal)
+    }
+  }
+}
+

@@ -6,11 +6,12 @@ import org.nlogo.api.{AnonymousCommand, AnonymousReporter, ExtensionException, C
 import scala.collection.mutable
 
 class Agent (var qTable : mutable.Map[String, List[Double]] = mutable.Map(), var agent : org.nlogo.api.Agent = null,
-             var stateDef : StateDefinition = null, var actions : List[AnonymousCommand] = List(),
+             var stateDef : StateDefinition = null, var previousState : String = null,
+             var actions : List[AnonymousCommand] = List(),
              var rewardFunc: AnonymousReporter = null, var isEndEpisode: AnonymousReporter = null,
              var resetEpisode: AnonymousCommand = null, var actionSelection: ActionSelection = new ActionSelection,
              private var p_learningRate : Double = -1, private var p_discountFactor : Double = -1,
-             var episode : Int = 0) {
+             var episode : Int = 0, var actionActualState : Int = 0) {
 
   def getBestActionExpectedReward(state : String): Double = {
     val optQlist : Option[List[Double]] = qTable.get(state)
