@@ -23,3 +23,31 @@ To help you in debugging your simulations you can call the learning primitive in
 ## Example
 
 To make it easier to understand the usage of the extension we [implemented](https://github.com/KevinKons/qlearning-netlogo-extension/blob/v0.2/cliff-walking.nlogo) the classic [cliff-waking problem](https://medium.com/@lgvaz/understanding-q-learning-the-cliff-walking-problem-80198921abbc) using the extension.
+
+> Q-Learning example: the Cliff Walking problem
+
+```NetLogo
+extensions[qlearningextension]
+
+Breed[Walkers Walker]
+
+to setup
+  ask Walkers [
+    qlearningextension:state-def ["xcor" "ycor"]
+    (qlearningextension:actions [goUp] [goDown] [goLeft] [goRight])
+    qlearningextension:reward [rewardFunc]
+    qlearningextension:end-episode [isEndState] resetEpisode
+    qlearningextension:action-selection "e-greedy" [0.5 0.08]
+    qlearningextension:learning-rate 1
+    qlearningextension:discount-factor 0.75
+  ]
+end
+
+
+to go
+  ask Walkers [
+    qlearningextension:learning
+    print(qlearningextension:get-qtable)
+  ]
+end
+```
