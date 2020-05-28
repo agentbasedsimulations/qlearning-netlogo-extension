@@ -96,9 +96,44 @@ Used to specify the discount factor. The  `discountFactor`argument must be a num
 
 ### Q-Learning Execution Primitives
 
+After setting up the extension, you must modify your simulation execution procedure (often called `go`) to activate the Q-Learning algorithm.
+
+The following primitives are available to activate the Q-Learning algorithm. These must be executed within an `ask` block, to ask your learner agents to learn.
+
+---
+
+#### `qlearningextension:learning`
+
+This primitives performs a Q-Learning step, which consist of the following sequence of steps:
+
+1. select an action in the current state (according the selection policy) and performs it.
+2. compute the reward.
+3. update the Q-table.
+4. check whether the new state is a final state, and if so, resets the agent/environment.
+
+To help you in debugging your simulation, you can execute the learning primitive in a little different way: `(qlearningextension:learning true)`. Calling the primitive this way will make the extension print in the NetLogo console the following values: the old state and action, the old Q-list (the Q-table values of the old state), the new state, the observed reward, the expected reward of the new state and the new Q-list.
+
+Another way to debugging your simulations calling the `qlearningextension:get-qtable` primitive, this will return a string with the current Q-table.
+
+(TODO Eloísa: verifica se os dados que são printados no console são mesmo estes acima, ou se faltou algum dado).
+
+---
+
+#### `qlearningextension:learn`
+(TODO Eloísa explicar)
+
+---
+
+#### `qlearningextension:act`
+(TODO Eloísa: explicar)
+
+
+<!--
 Now, with everything setted up you can run the simulation. In your "go" routine inside an `ask` to the learner agent you can run the primitive `qlearningextension:learning`. This will select an action to the current state, perform the action, get the reward, update the Q-table, verify if the new state is an end state and if so will run the procedure passed to the extension in the `end-episode` primitive.
 
 To help you in debugging your simulations you can call the learning primitive in a little different way: `(qlearningextension:learning true)`, calling the primitive this way will make the extension print in the console the following values: The old state representation, the old Q-list (the Q-table values of the old state), the reward of the new state, the new state representation, the expected reward of the new state and the new Q-list. Another way to debugging your simulations calling the `qlearningextension:get-qtable` primitive, this will return a string with the current Q-table.
+
+-->
 
 ## Example
 
