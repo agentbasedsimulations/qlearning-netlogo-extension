@@ -38,7 +38,7 @@ This primitive receives a list containing variable names that the agent that did
 
 ---
 
-##### `qlearningextension:state-def ["var1" "varN"] reporter`
+#### `qlearningextension:state-def ["var1" "varN"] reporter`
 
 Acts exactly the previous primitive, except that it admits an additional `reporter` argument. This primitive is useful when you need to add values to the state definition that are not agent variables.
 
@@ -102,7 +102,9 @@ To help you in debugging your simulations you can call the learning primitive in
 
 ## Example
 
-To make it easier to understand the usage of the extension we [implemented](https://github.com/KevinKons/qlearning-netlogo-extension/blob/v0.2/cliff-walking.nlogo) the classic [cliff-waking problem](https://medium.com/@lgvaz/understanding-q-learning-the-cliff-walking-problem-80198921abbc) using the extension.
+To make it easier to understand the usage of the extension we [implemented](cliff-walking.nlogo) the classic [cliff-waking problem](https://medium.com/@lgvaz/understanding-q-learning-the-cliff-walking-problem-80198921abbc) using the extension.
+
+(TODO Eloisa: explicar o exemplo e o código. Pode adaptar do artigo do BRACIS, mas dai teria que refrasear algumas coisas para que os revisores não reclamem que o texto do artigo foi copiado daqui)
 
 > Q-Learning example: the Cliff Walking problem
 
