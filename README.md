@@ -2,11 +2,36 @@
 
 This extension provides an easy way to use Q-Learning within Netlogo.
 
+**Table of Contents**
+* [Installation](#installation)
+* [Usage](#usage)
+* [Example](#example)
+* [Team](#team)
+
+
+
+## Installation
+Descrever como a extension pode ser instalada atraves do Extension Manager, mencionando a figura abaixo.
+
+![NetLogo Extension Manager](img/netlogo-extension-manager.png)
+
 ## Usage
 
-The first thing you need to do is an `ask` to the breed you want to be the learners. Inside this `ask` you can run the following primitives:
+The first thing you need to do in the `setup` of your simulation is an `ask` to the breed you want to be the learners. Inside this `ask` you can run the following primitives:
 
-* `qlearningextension:state-def ["var1" "varN"]` used to define a state representation to your learner agent, it recieves a list containing variable names that the agent that did the `ask` owns. Befero running any of the primitives below you must first run this primitive. Another way to define the state definition is with the following primitive: `qlearningextension:state-def ["var1" "varN"] reporter` the reporter parameter must be a reporter that returns a string, every time the extension is about to generate a state the reporter will be called and the return will be added to the state definition of that state. This other form to define the state definiton provides a way to add values to the state definition that aren't variables that the learner agent owns.
+##### `qlearningextension:state-def ["var1" "varN"]`
+
+Used to define a state representation to your learner agent.
+This primitive receives a list containing variable names that the agent that did the `ask` owns. **Before running any of the primitives below you must first run this primitive**.
+
+##### `qlearningextension:state-def ["var1" "varN"] reporter`
+Acts exactly the previous primitive, except that it admits an additional `reporter` argument. This primitive is useful when you need to add values to the state definition that are not agent variables.
+
+The `reporter` argument must be a reporter that returns a `string`.  Every time the extension is about to generate a state, this reporter will be called and its return will be added to the state definition of that state.
+
+Another way to define the state definition is with the following primitive: `qlearningextension:state-def ["var1" "varN"] reporter` the reporter parameter must be a reporter that returns a string, every time the extension is about to generate a state the reporter will be called and the return will be added to the state definition of that state. This other form to define the state definiton provides a way to add values to the state definition that aren't variables that the learner agent owns.
+
+
 * `(qlearningextension:action [action1] [action2] [actionN])` used to define what actions the learner agent can perform, it recieves the actions that the agent can perform. You can pass how many actions you want, but they must be procedures not reporters. Obs:Do not forget the parentheses encapsulating the primitive call and the brackets surrounding each action.
 * `learningextension:reward [rewardFunc]` used to define a reporter that will return a number with the reward of the actual state.
 * `qlearningextension:end-episode [isEndState] resetEpisode` the first parameter is a reporter that will return a boolean value informing if the actual state characterizes the end of an episode or not. The second one is a procedure that is executed after the end of an episode, this procedure must, for exemple, set the agent/enviroment to it's initial state.
@@ -51,3 +76,11 @@ to go
   ]
 end
 ```
+
+# Team
+
+[Kevin Kons](https://github.com/KevinKons) released the first version of the extension as its software engineering bachelor's thesis at the [Universidade do Estado de Santa Catarina (UDESC)](https://www.udesc.br/ceavi).
+
+Currently, the following team is in charge of maintaining the extension:
+- [Eloísa Bazzanela](https://github.com/elobazza) (undergraduate software engineering student at UDESC)
+- [Fernando Santos](https://github.com/santos-fernando) (professor at UDESC)
