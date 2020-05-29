@@ -1,8 +1,6 @@
 # Q-Learning Netlogo Extension
 
-This extension provides an easy way to use Q-Learning within Netlogo.
-
-(TODO Eloísa: colocar um link no termo Q-Learning, apontando para algum local que explique ele. Pode ser a wikipedia)
+This extension provides an easy way to use [Q-Learning](https://en.wikipedia.org/wiki/Q-learning) within Netlogo.
 
 **Table of Contents**
 * [Installation](#installation)
@@ -12,9 +10,13 @@ This extension provides an easy way to use Q-Learning within Netlogo.
 
 
 ## Installation
-Descrever como a extension pode ser instalada atraves do Extension Manager, mencionando a figura abaixo.
+Extension Manager is a tool for discovering and managing extensions. It can be accessed through the "Extensions ..." option in the Tools menu.
+
+On the left side of the Extension Manager window, as shown in the image below, there is a list of all available extensions. At the top of the window, there is a text box that can be used to search for an extension by its name.
 
 ![NetLogo Extension Manager](img/netlogo-extension-manager.png)
+
+When an extension is selected, the text on the right side provides a detailed description of the extension. Above the description, there are buttons for various operations, such as installation, update, and uninstallation. The "Add to code tab" button will add the extension to your model's list of extensions.
 
 ## Usage
 
@@ -111,35 +113,27 @@ This primitives performs a Q-Learning step, which consist of the following seque
 3. update the Q-table.
 4. check whether the new state is a final state, and if so, resets the agent/environment.
 
-To help you in debugging your simulation, you can execute the learning primitive in a little different way: `(qlearningextension:learning true)`. Calling the primitive this way will make the extension print in the NetLogo console the following values: the old state and action, the old Q-list (the Q-table values of the old state), the new state, the observed reward, the expected reward of the new state and the new Q-list.
+To help you in debugging your simulation, you can execute the learning primitive in a little different way: `(qlearningextension:learning true)`. Calling the primitive this way will make the extension print in the NetLogo console the following values: the old state and action, the old Q-list (the Q-table values of the old state), the new state, the observed reward, the expected reward of the new state and the new Q-list. Finally, if the action selection method uses epsilon, it will be printed with the other information.
 
 Another way to debugging your simulations calling the `qlearningextension:get-qtable` primitive, this will return a string with the current Q-table.
-
-(TODO Eloísa: verifica se os dados que são printados no console são mesmo estes acima, ou se faltou algum dado).
 
 ---
 
 #### `qlearningextension:learn`
-(TODO Eloísa explicar)
+
+Is responsible for learning the agents and updating the Q-Table to assist in the decision making of new actions. As well as the learning method, there is the possibility to use it in the following way `(qlearningextension:learn true)` for debugging
 
 ---
 
 #### `qlearningextension:act`
-(TODO Eloísa: explicar)
 
-
-<!--
-Now, with everything setted up you can run the simulation. In your "go" routine inside an `ask` to the learner agent you can run the primitive `qlearningextension:learning`. This will select an action to the current state, perform the action, get the reward, update the Q-table, verify if the new state is an end state and if so will run the procedure passed to the extension in the `end-episode` primitive.
-
-To help you in debugging your simulations you can call the learning primitive in a little different way: `(qlearningextension:learning true)`, calling the primitive this way will make the extension print in the console the following values: The old state representation, the old Q-list (the Q-table values of the old state), the reward of the new state, the new state representation, the expected reward of the new state and the new Q-list. Another way to debugging your simulations calling the `qlearningextension:get-qtable` primitive, this will return a string with the current Q-table.
-
--->
+It is responsible for making the action decision, as well as executing the action.
 
 ## Example
 
 To make it easier to understand the usage of the extension we [implemented](cliff-walking.nlogo) the classic [cliff-waking problem](https://medium.com/@lgvaz/understanding-q-learning-the-cliff-walking-problem-80198921abbc) using the extension.
 
-(TODO Eloisa: explicar o exemplo e o código. Pode adaptar do artigo do BRACIS, mas dai teria que refrasear algumas coisas para que os revisores não reclamem que o texto do artigo foi copiado daqui)
+The environment of this simulation is a grid, in which a set of cells represents a precipice. The goal of an `Walker` agent is to learn how to get from the starting cell to the target cell without falling off the cliff. The agent can move up, down, right and left. An episode ends when the agent reaches the target cell or falls on the cliff. The reward when the agent falls on the cliff is -100; otherwise, your reward will be -1 for each cell you have passed.
 
 > Q-Learning example: the Cliff Walking problem
 
@@ -168,6 +162,22 @@ to go
   ]
 end
 ```
+
+The `setup` is where the simulation is configured. The `ask` command block causes all `Walkers` agents to execute commands offered by the extension to configure the Q-Learning algorithm.
+
+The command `qlearningextension: state-def` designates the representation of the state. It takes as an argument a list of agent attributes whose values characterize a state.
+
+To specify the actions considered there is the command `qlearningextension: actions`. It uses as argument a list of NetLogo procedures implemented by the developer, each of which corresponds to an action that the agent can perform. In the Cliff Walking simulation, the procedures `goUp`, `goDown`, `goLeft` and `goRight` move the agent.
+
+To discover the terminal states and end an episode, use the command `qlearningextension: end-episode` to specify the procedure that identifies a final state and the procedure that resets the simulation, both procedures will be implemented by the developer.
+
+To specify the reward received by the agent whenever it acts, the extension provides the command `qlearningextension: reward` where the procedure that calculates and returns the reward value is informed.
+
+The extension provides two stock selection policies: `random-normal` and `e-greedy`. They select an action at random with a certain probability. The difference is that in the `e-greedy` policy this probability is periodically reduced by a factor. To designate the stock selection policy, the extension provides the command `qlearningextension: action-selection`, which takes as an argument the name of the policy and a list of its parameters.
+
+To specify the learning rate and the discount factor, the extension provides the commands `qlearningextension:learning-rate` and `qlearningextension:discount-factor`, respectively.
+
+The `go` is where the behavior of the `Walkers` agents is implemented. It contains the command `qlearningextension: learning` that executes the learning, action selection and executes the action, then there is the print `(qlearningextension: get-qtable)` responsible for printing the Q-Table.
 
 # Team
 
