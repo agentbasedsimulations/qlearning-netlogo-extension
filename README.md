@@ -179,6 +179,14 @@ To specify the learning rate and the discount factor, the extension provides the
 
 The `go` is where the behavior of the `Walkers` agents is implemented. It contains the command `qlearningextension: learning` that executes the learning, action selection and executes the action, then there is the print `(qlearningextension: get-qtable)` responsible for printing the Q-Table.
 
+# Como Editar essa Extensão
+
+Primeiramente, é necessário instalar o `IntelliJ`, a IDE oferecida pela JetBrains. Após a instalação, adiciona-se os plugins `Scala` e `SBT`. Feito isso, clone o repositório e abra-o no `IntelliJ` e tente gerar o build, então, adicione as dependências faltantes.
+
+Para gerar o build, é necessário iniciar o console do `SBT`, encontrado na parte inferior da IDE, ao abrí-lo, basta clicar no símbolo de play. Quando carregar, basta digitar `package` no console que ele gerará um `.jar` dentro do diretório `target\scala-2.12`.
+
+Para testar a nova versão, basta copiar o arquivo jar mencionado anteriormente e alterá-lo na pasta `qlearningextension` na pasta de extensões do NetLogo.
+
 # Team
 
 [Kevin Kons](https://github.com/KevinKons) released the first version of the extension in 2019 as his software engineering bachelor's thesis at the [Universidade do Estado de Santa Catarina (UDESC)](https://www.udesc.br/ceavi).
