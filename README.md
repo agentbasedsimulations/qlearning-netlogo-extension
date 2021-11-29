@@ -83,7 +83,27 @@ The following two selection policies are provided:
 In both cases the numeric arguments must be between 0 and 1.
 
 ---
+#### `qlearningextension:action-selection-egreedy epsilonValue "type" decreaseValue`
 
+Used to define the e-greedy action selection policy.
+
+The following two selection types are provided:
+- `rate`:  selects an action according to the percentage passed as the first argument, but such percentage is decreased over time according to the third argument. For example, `qlearningextension:action-selection-egreedy 0.8 "rate" 0.99995` specifies that 80% of the actions will be selected at random, but after each episode this percentage is updated and its new value corresponds to the current value multiplied by the decrease rate.
+
+- `value`: selects an action according to the percentage passed as the first argument, but such percentage is changed to the third argument, which can be a report that updates the next epsilon value in the simulation, using its own decay rule. For example, `qlearningextension:action-selection-egreedy 0.8 "value" reportDecrease` specifies that reportDecrease will set the next epsilon value.
+
+In both cases the numeric arguments must be between 0 and 1.
+
+---
+#### `qlearningextension:action-selection-random value`
+
+Used to define the random normal action selection policy.
+
+This policy selects an action at random according to the percentage passed as argument. For example, `qlearningextension:action-selection-random 0.8` specifies that 80% of the actions will be selected at random;
+
+The numeric arguments must be between 0 and 1.
+
+---
 #### `qlearningextension:learning-rate learningRate`
 
 Used to specify the learning rate. The `learningRate` argument must be a numeric value between 0 and 1.
