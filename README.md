@@ -83,7 +83,27 @@ The following two selection policies are provided:
 In both cases the numeric arguments must be between 0 and 1.
 
 ---
+#### `qlearningextension:action-selection-egreedy epsilonValue "type" decreaseValue`
 
+Used to define the e-greedy action selection policy.
+
+The following two selection types are provided:
+- `rate`:  selects an action according to the percentage passed as the first argument, but such percentage is decreased over time according to the third argument. For example, `qlearningextension:action-selection-egreedy 0.8 "rate" 0.99995` specifies that 80% of the actions will be selected at random, but after each episode this percentage is updated and its new value corresponds to the current value multiplied by the decrease rate.
+
+- `value`: selects an action according to the percentage passed as the first argument, but such percentage is changed to the third argument, which can be a report that updates the next epsilon value in the simulation, using its own decay rule. For example, `qlearningextension:action-selection-egreedy 0.8 "value" reportDecrease` specifies that reportDecrease will set the next epsilon value.
+
+In both cases the numeric arguments must be between 0 and 1.
+
+---
+#### `qlearningextension:action-selection-random value`
+
+Used to define the random normal action selection policy.
+
+This policy selects an action at random according to the percentage passed as argument. For example, `qlearningextension:action-selection-random 0.8` specifies that 80% of the actions will be selected at random;
+
+The numeric arguments must be between 0 and 1.
+
+---
 #### `qlearningextension:learning-rate learningRate`
 
 Used to specify the learning rate. The `learningRate` argument must be a numeric value between 0 and 1.
@@ -179,13 +199,13 @@ To specify the learning rate and the discount factor, the extension provides the
 
 The `go` is where the behavior of the `Walkers` agents is implemented. It contains the command `qlearningextension: learning` that executes the learning, action selection and executes the action, then there is the print `(qlearningextension: get-qtable)` responsible for printing the Q-Table.
 
-# Como Editar essa Extensão
+# How to Edit this Extension
 
-Primeiramente, é necessário instalar o `IntelliJ`, a IDE oferecida pela JetBrains. Após a instalação, adiciona-se os plugins `Scala` e `SBT`. Feito isso, clone o repositório e abra-o no `IntelliJ` e tente gerar o build, então, adicione as dependências faltantes.
+First, you need to install `IntelliJ`, the IDE offered by JetBrains. After installation, add the `Scala` and `SBT` plugins.Once that's done, clone the repository and open it in `IntelliJ`and try to generate the build, then add the missing dependencies.
 
-Para gerar o build, é necessário iniciar o console do `SBT`, encontrado na parte inferior da IDE, ao abrí-lo, basta clicar no símbolo de play. Quando carregar, basta digitar `package` no console que ele gerará um `.jar` dentro do diretório `target\scala-2.12`.
+To generate the build, it is necessary to start the `SBT` console, found at the bottom of the IDE, when opening it, just click on the play symbol. When it loads, just type `package` in the console and it will generate a `.jar` inside the `target\scala-2.12` directory.
 
-Para testar a nova versão, basta copiar o arquivo jar mencionado anteriormente e alterá-lo na pasta `qlearningextension` na pasta de extensões do NetLogo.
+To test the new version, just copy the jar file mentioned above and change it in the `qlearningextension` folder in the NetLogo extensions folder.
 
 # Team
 
