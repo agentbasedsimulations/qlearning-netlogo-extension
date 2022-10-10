@@ -124,7 +124,7 @@ The following primitives are available to activate the Q-Learning algorithm. The
 
 ---
 
-#### `qlearningextension:learning`
+#### `qlearningextension:learning true`
 
 This primitives performs a Q-Learning step, which consist of the following sequence of steps:
 
@@ -133,7 +133,9 @@ This primitives performs a Q-Learning step, which consist of the following seque
 3. update the Q-table.
 4. check whether the new state is a final state, and if so, resets the agent/environment.
 
-To help you in debugging your simulation, you can execute the learning primitive in a little different way: `(qlearningextension:learning true)`. Calling the primitive this way will make the extension print in the NetLogo console the following values: the old state and action, the old Q-list (the Q-table values of the old state), the new state, the observed reward, the expected reward of the new state and the new Q-list. Finally, if the action selection method uses epsilon, it will be printed with the other information.
+To help you in debugging your simulation, you can execute the learning primitive `qlearningextension:learning true`. Calling the primitive this way will make the extension print in the NetLogo console the following values: the old state and action, the old Q-list (the Q-table values of the old state), the new state, the observed reward, the expected reward of the new state and the new Q-list. Finally, if the action selection method uses epsilon, it will be printed with the other information.
+
+If you don't want to print the Q-Table on every learning step, just change the primitive's value to `qlearningextension:learning false`.
 
 Another way to debugging your simulations calling the `qlearningextension:get-qtable` primitive, this will return a string with the current Q-table.
 
