@@ -112,7 +112,7 @@ Used to specify the learning rate. The `learningRate` argument must be a numeric
 
 #### `qlearningextension:discount-factor discountFactor`
 
-Used to specify the discount factor. The  `discountFactor`argument must be a numeric value between 0 and 1.
+Used to specify the discount factor. The  `discountFactor` argument must be a numeric value between 0 and 1.
 
 ---
 
@@ -133,7 +133,7 @@ This primitives performs a Q-Learning step, which consist of the following seque
 3. update the Q-table.
 4. check whether the new state is a final state, and if so, resets the agent/environment.
 
-The <boolean-value> argument indicates whether to run the learning step in debug mode, as detailed below.
+The `<boolean-value>` argument indicates whether to run the learning step in debug mode, as detailed below.
 
 To help you in debugging your simulation, you can execute the learning primitive `qlearningextension:learning true`. Calling the primitive this way will make the extension print in the NetLogo console the following values: the old state and action, the old Q-list (the Q-table values of the old state), the new state, the observed reward, the expected reward of the new state and the new Q-list. Finally, if the action selection method uses epsilon, it will be printed with the other information.
 
