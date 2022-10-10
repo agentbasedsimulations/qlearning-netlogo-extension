@@ -17,7 +17,7 @@ public class LearningCommand implements org.nlogo.api.Command {
 
 	@Override
 	public Syntax getSyntax() {
-		return SyntaxJ.commandSyntax();
+		return SyntaxJ.commandSyntax(new int[] {Syntax.BooleanType()});
 	}
 
 	@Override
@@ -136,7 +136,9 @@ public class LearningCommand implements org.nlogo.api.Command {
 		      Boolean isEndEpisode = (Boolean) agent.getEndEpisode().report(context, args);
 		      if(isEndEpisode) {
 		        agent.setEpisode();
-		        agent.getActionSelection().setRoulette(agent.getActionSelection().getRoulette() * agent.getActionSelection().getDecreaseRateNumber());
+		        if(agent.getActionSelection().getMethod().equals("e-greedy")) {
+		        	new DecayEpsilonCommand().perform(args, context);	
+		        }
 		        agent.getResetEpisode().perform(context, args);
 		      } 
 		      
