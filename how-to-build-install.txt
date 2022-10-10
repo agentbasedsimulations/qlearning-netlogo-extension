@@ -1,0 +1,36 @@
+Q-learning NetLogo Extension
+
+
+****************************************************
+*** 	HOW TO CONFIG. THE ECLIPSE PROJECT  	 ***
+****************************************************
+In your Eclipse, create a new Classpath Variable:
+	Window > Preferences > Java > Build Path > Classpath Variables > New
+Use the following values:
+
+Name: NETLOGO_JAR
+Path: select the "netlogo-6.x.x.jar" located in the "app" directory in your NetLogo installation directory.
+
+****************************************************
+***		 HOW TO BUILD THE EXTENSION   			 ***
+****************************************************
+Run the extension-exporter.bat script on Windows Power Shell to create the qlearningextension.jar
+
+By default, the .jar file is created in the lib directory of this Eclipse project.
+ 
+You can set a different output location changin the JARFILE variable within the .bat script file.  
+
+
+****************************************************
+***		 HOW TO INSTALL THE EXTENSION 			 ***
+****************************************************
+1. Open the extensions directory of your NetLogo profile.
+
+On Windows, it is usually located at:
+C:\Users\<your_user>\AppData\Roaming\NetLogo\<netlogo_version_number>\extensions 
+
+2. Create a 'qlearningextension' subdirectory in this extensions directory.
+
+3. Copy the qlearningextension.jar to the qlearningextension directory created in step 2.
+
+4. Restart NetLogo, if necessary.
