@@ -48,7 +48,7 @@ The `reporter` argument must be a reporter that returns a `string`.  Every time 
 
 ---
 
-#### `(qlearningextension:action [action1] [action2] [actionN])`
+#### `(qlearningextension:actions [action1] [action2] [actionN])`
 Used to define what **actions** the learner agent can perform.
 
 The primitive receives as argument(s) the action(s) that the agent can perform. You can pass how many actions you want, **but they must be procedures not reporters**.  
@@ -57,7 +57,7 @@ Please notice (and do not forget to type) the parentheses encapsulating the prim
 
 ---
 
-#### `learningextension:reward [rewardFunc]`
+#### `qlearningextension:reward [rewardFunc]`
 
 Used to define a **reporter** that will return a number with the **reward** for the **current state**.
 
