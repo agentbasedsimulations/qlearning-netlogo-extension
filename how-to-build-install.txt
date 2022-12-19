@@ -2,14 +2,16 @@ Q-learning NetLogo Extension
 
 
 ****************************************************
-*** 	HOW TO CONFIG. THE ECLIPSE PROJECT  	 ***
+*** 	HOW TO CONFIGURE THE ECLIPSE PROJECT  	 ***
 ****************************************************
 In your Eclipse, create a new Classpath Variable:
 	Window > Preferences > Java > Build Path > Classpath Variables > New
+	
 Use the following values:
 
-Name: NETLOGO_JAR
+Name: NETLOGO_JAR (uppercase)
 Path: select the "netlogo-6.x.x.jar" located in the "app" directory in your NetLogo installation directory.
+The netlogo.jar file is not included in the repository to avoid copyright issues. So, you must download NetLogo and point to the corresponding jar file located within the NetLogo installation directory. 
 
 ****************************************************
 ***		 HOW TO BUILD THE EXTENSION   			 ***
