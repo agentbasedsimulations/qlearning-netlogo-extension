@@ -11,12 +11,6 @@ plugins {
     id 'java-library'
 }
 
-eclipse {
-    classpath {
-       downloadSources=true
-    }
-}
-
 repositories {
 	maven {
 		// netlogo maven repository
@@ -41,11 +35,30 @@ dependencies {
     
 }
 
+def EXTENSION_NAME = 'qlearningextension'
+
+
 jar {
     manifest {
     	attributes "NetLogo-Extension-API-Version": "6.1.1"
-        attributes "Extension-Name": "qlearningextension"
+        attributes "Extension-Name": EXTENSION_NAME
         attributes "Class-Manager": "main.java.Extension"
     }
-    archiveBaseName = 'qlearningextension'
+    archiveBaseName = EXTENSION_NAME
+}
+
+tasks.register('install-on-netlogo') {
+   group 'install'
+   dependsOn(jar)
+   doLast {
+   	    def jarsource = 'build/libs/'+EXTENSION_NAME+'.jar'
+   	    def jartarget = NETLOGO_USER_DIR+'/extensions/qlearningextension'
+   	    println '**************'
+   		println 'copying '+jarsource+' to '+jartarget
+   		println '**************'
+        copy {
+        	from jarsource
+			into jartarget 
+	      }
+    }
 }
