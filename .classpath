@@ -6,6 +6,5 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="NETLOGO_JAR"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

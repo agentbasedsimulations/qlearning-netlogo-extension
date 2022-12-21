@@ -1,38 +1,32 @@
 Q-learning NetLogo Extension
 
-
 ****************************************************
-*** 	HOW TO CONFIGURE THE ECLIPSE PROJECT  	 ***
+*** HOW TO OPEN THE PROJECT USING THE ECLIPSE IDE ***
 ****************************************************
-In your Eclipse, create a new Classpath Variable:
-	Window > Preferences > Java > Build Path > Classpath Variables > New
-	
-Use the following values:
+Be sure you have the Eclipse Buildship (Gradle) plugin installed.
 
-Name: NETLOGO_JAR (uppercase)
-Path: select the "netlogo-6.x.x.jar" located in the "app" directory in your NetLogo installation directory.
-The netlogo.jar file is not included in the repository to avoid copyright issues. So, you must download NetLogo and point to the corresponding jar file located within the NetLogo installation directory. 
+1. Clone this repository from Github.
+2. On Eclipse, open the following projects:
+	- qlearning-netlogo-extension (gradle rootproject)
+	- lib (source code project)
+
+The source code is in the 'lib' project.
+
 
 ****************************************************
 ***		 HOW TO BUILD THE EXTENSION   			 ***
 ****************************************************
-Run the extension-exporter.bat script on Windows Power Shell to create the qlearningextension.jar
-
-By default, the .jar file is created in the lib directory of this Eclipse project.
- 
-You can set a different output location changin the JARFILE variable within the .bat script file.  
-
+Run the 'jar' gradle task in the 'lib' project to create the 'qlearningextension.jar' file in the 'build/libs/' directory. 
 
 ****************************************************
-***		 HOW TO INSTALL THE EXTENSION 			 ***
+***		 HOW TO INSTALL THE EXTENSION ON NETLOGO ***
 ****************************************************
-1. Open the extensions directory of your NetLogo profile.
+1. Open the extensions directory of your NetLogo profile. Usually it is located at:
+ - Windows: C:\Users\<your_user>\AppData\Roaming\NetLogo\<netlogo_version_number>\extensions
+ - Linux: ~/.netlogo/<netlogo_version_number>/extensions
 
-On Windows, it is usually located at:
-C:\Users\<your_user>\AppData\Roaming\NetLogo\<netlogo_version_number>\extensions 
+2. Create directory named 'qlearningextension' within the 'extensions' directory.
 
-2. Create a 'qlearningextension' subdirectory in this extensions directory.
-
-3. Copy the qlearningextension.jar to the qlearningextension directory created in step 2.
+3. Copy the 'qlearningextension.jar' to the 'qlearningextension' directory created in step 2.
 
 4. Restart NetLogo, if necessary.
