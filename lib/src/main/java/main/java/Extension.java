@@ -1,6 +1,7 @@
 package main.java;
 
-import org.nlogo.api.*;
+import org.nlogo.api.DefaultClassManager;
+import org.nlogo.api.PrimitiveManager;
 
 import main.java.primitives.go.ActCommand;
 import main.java.primitives.go.DecayEpsilonCommand;
@@ -16,7 +17,6 @@ import main.java.primitives.setup.DiscountFactorCommand;
 import main.java.primitives.setup.EndEpisodeCommand;
 import main.java.primitives.setup.LearningRateCommand;
 import main.java.primitives.setup.PrintCommand;
-import main.java.primitives.setup.RandomSeedCommand;
 import main.java.primitives.setup.RewardCommand;
 import main.java.primitives.setup.StateDefinitionCommand;
 import main.java.primitives.setup.StateDefinitionExtraCommand;
