@@ -1,7 +1,7 @@
-package main.java.model;
+package model;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,164 +13,72 @@ import org.nlogo.api.AnonymousReporter;
 import org.nlogo.api.Context;
 import org.nlogo.api.ExtensionException;
 
+/**
+ * Agent Learning Class
+ * @author Eloisa Bazzanella
+ * @since, march, 2022
+ */
 public class AgentLearning {
-
-	
-	LinkedHashMap<String, LinkedHashMap<String, Double>> qTable = new LinkedHashMap<String, LinkedHashMap<String, Double>>();
-	
-	StateDefinition stateDef = null;
-	String previousState = null;
-	
-	List<AnonymousCommand> actions = new ArrayList<>();
-	AnonymousReporter rewardFunc = null;
-	AnonymousReporter endEpisode = null;
-	AnonymousCommand resetEpisode = null;
-	
-	ActionSelection actionSelection = new ActionSelection();
-	
-	private Double learningRate = -1.00;
-	private Double discountFactor = -1.00;
-	
-    int episode = 0; 
-    int actionActualState = 0;
-    
-    org.nlogo.api.Agent agent = null;
-    
-    
-    public Double getBestActionExpectedReward(String state) {
-    	LinkedHashMap<String, Double> qList = qTable.get(state);
     	
-    	//Estado não visitado anteriormente
-    	if(qList == null) { 
-    	    return 0.00;
-    	} else {
-    		Map.Entry<String, Double> maxEntry = null;
-    		for (Map.Entry<String, Double> entry : qList.entrySet()) {
-    	        if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
-    	            maxEntry = entry;
-    	        }
-    	    }
-    		
-    		return maxEntry.getValue();
-    	}
-    }
+    public StateDefinition stateDef       = null;
+    public List<AnonymousCommand> actions = new ArrayList();
     
-    public String getState(Context context) throws AgentException {
-	    String state = "";
-	    
-	    for(String v : stateDef.getVars()) {	    	
-	    	Turtle turtle = ((World) agent.world()).getTurtle(agent.id());
-	    	state += turtle.getVariable(v);
-	    }
-	    
-	    if(stateDef.getReporterAux() == null) {
-	    	return state;
-	    } else {
-	    	Object[] args = null;
-		    String reporterAuxResult = stateDef.getReporterAux().report(context, args).toString();
-		    return state + reporterAuxResult;
-	    }
-    }
+    public AnonymousReporter rewardFunc    = null;
+    public AnonymousReporter endEpisode    = null;
+    public ActionSelection actionSelection = new ActionSelection();
+
+    public String algorithm      = "";
+    public Double learningRate   = -1.00;
+    public Double discountFactor = -1.00;
+    public Double lambda         = -1.00;
+    public int episode           = 0; 
+    
+    public org.nlogo.api.Agent agent = null;
     
     public void setDiscountFactor(Double f) throws ExtensionException {
-	    if(f > 1 || f < 0) {
-	      throw new ExtensionException("Discount factor must be a value between 0 and 1");
-	    }
-	    discountFactor = f;
-	}
+        if(f > 1 || f < 0) {
+          throw new ExtensionException("Discount factor must be a value between 0 and 1");
+        }
+        discountFactor = f;
+    }
     
     public void setLearningRate(Double r) throws ExtensionException {
-	    if(r > 1 || r < 0) {
-	      throw new ExtensionException("Learning rate must be a value between 0 and 1");
-	    }
-	    learningRate = r;
-	}
-    
-    public void setActionActualState(int actionActualState) {
-    	this.actionActualState = actionActualState;
+        if(r > 1 || r < 0) {
+          throw new ExtensionException("Learning rate must be a value between 0 and 1");
+        }
+        learningRate = r;
     }
     
-    public void setEndEpisode (AnonymousReporter endEpisode) {
-    	this.endEpisode = endEpisode;
+    public void setLambda(Double l) throws ExtensionException {
+        if(l > 1 || l < 0) {
+          throw new ExtensionException("Lambda must be a value between 0 and 1");
+        }
+        lambda = l;
     }
-    
-    public void setResetEpisode (AnonymousCommand resetEpisode) {
-    	this.resetEpisode = resetEpisode;
-    }
-    
-    public void setRewardFunction(AnonymousReporter reward) {
-    	this.rewardFunc = reward;
+
+    public void setAlgorithm(String algorithm) {
+        this.algorithm = algorithm;
     }
     
     public void addAction(AnonymousCommand a) {
     	actions.add(a);
     }
     
-    public void setStateDefinition (StateDefinition stateDef) {
-    	this.stateDef = stateDef;
-    }
-    
-    public void setAgent(org.nlogo.api.Agent agent) {
-    	this.agent = agent;
-    }
-    
     public void setEpisode() {
     	this.episode += 1;
     }
     
-    public void setPreviousState(String previousState) {
-    	this.previousState = previousState;
-    }
-    
-    public StateDefinition getStateDef() {
-    	return this.stateDef;
-    }
-    
-    public String getPreviousState() {
-    	return this.previousState;
-    }
-    
-    public List<AnonymousCommand> getActions() {
-    	return this.actions;
-    }
-    
-    public AnonymousReporter getReward() {
-    	return this.rewardFunc;
-    }
-    
-    public AnonymousReporter getEndEpisode() {
-    	return this.endEpisode;
-    }
-    
-    public AnonymousCommand getResetEpisode() {
-    	return this.resetEpisode;
-    }
-    
-    public ActionSelection getActionSelection() {
-    	return this.actionSelection;
-    }
-    
-    public Double getLearningRate() {
-    	return this.learningRate;
-    }
-    
-    public Double getDiscountFactor() {
-    	return this.discountFactor;
-    }
-    
-    public org.nlogo.api.Agent getAgent() {
-    	return this.agent;
-    }
-    
-    public int getEpisode() {
-    	return this.episode;
-    }
-    
-    public int getActionActualState() {
-    	return this.actionActualState;
-    }
-    
-    public LinkedHashMap<String, LinkedHashMap<String, Double>> getQTable() {
-    	return this.qTable;
+    public Map<String, Double> getState(Context context) throws AgentException {
+        Map<String, Double> state = new HashMap<String, Double>();
+
+        for(String v : stateDef.getVars()) {	
+            Turtle turtle = ((World) agent.world()).getTurtle(agent.id());
+            
+            if(turtle.getVariable(v) != null) {
+                state.put(v, (Double) turtle.getVariable(v));
+            }
+        }
+
+        return state;
     }
 }
