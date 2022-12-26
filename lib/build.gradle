@@ -11,6 +11,15 @@ plugins {
     id 'java-library'
 }
 
+/* ********************************
+ * Constants used in this script
+ **********************************/
+
+def BURLAP_LIB_NAME = 'burlap'
+def BURLAP_LIB_VERSION = '3.0.1'
+def COMMONSLANG_LIB_NAME = 'commons-lang3' 
+def EXTENSION_NAME = 'learningextension'
+
 repositories {
 	maven {
 		// netlogo maven repository
@@ -28,23 +37,34 @@ dependencies {
     implementation 'com.google.guava:guava:30.1.1-jre'
     
     // https://mvnrepository.com/artifact/edu.brown.cs.burlap/burlap
-	implementation group: 'edu.brown.cs.burlap', name: 'burlap', version: '3.0.1'
+	implementation group: 'edu.brown.cs.burlap', name: BURLAP_LIB_NAME, version: BURLAP_LIB_VERSION
     
     // https://mvnrepository.com/artifact/org.nlogo/netlogo
 	implementation group: 'org.nlogo', name: 'netlogo', version: '6.1.1'
     
 }
 
-def EXTENSION_NAME = 'qlearningextension'
-
 
 jar {
     manifest {
     	attributes "NetLogo-Extension-API-Version": "6.1.1"
         attributes "Extension-Name": EXTENSION_NAME
-        attributes "Class-Manager": "main.java.Extension"
+        attributes "Class-Manager": "main.java.ExtensionCommands"
     }
     archiveBaseName = EXTENSION_NAME
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+    	configurations.runtimeClasspath.findAll { file ->
+    			//println(file)
+    			file.name == BURLAP_LIB_NAME+'-'+BURLAP_LIB_VERSION+'.jar' ||
+    			file.name.startsWith(COMMONSLANG_LIB_NAME)
+    		}.collect{file ->
+    			println(file)  
+	         	zipTree(file) 
+         }
+    }
+    // copy the license files (3rd party libraries such as BURLAP)
+    from ("${project.rootDir}/licenses/")
 }
 
 tasks.register('install-on-netlogo') {
@@ -52,7 +72,7 @@ tasks.register('install-on-netlogo') {
    dependsOn(jar)
    doLast {
    	    def jarsource = 'build/libs/'+EXTENSION_NAME+'.jar'
-   	    def jartarget = NETLOGO_USER_DIR+'/extensions/qlearningextension'
+   	    def jartarget = NETLOGO_USER_DIR+'/extensions/'+EXTENSION_NAME
    	    println '**************'
    		println 'copying '+jarsource+' to '+jartarget
    		println '**************'

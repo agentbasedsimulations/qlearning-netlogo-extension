@@ -1,4 +1,4 @@
-package model;
+package main.java.model;
 
 import java.util.List;
 import org.nlogo.api.AnonymousReporter;

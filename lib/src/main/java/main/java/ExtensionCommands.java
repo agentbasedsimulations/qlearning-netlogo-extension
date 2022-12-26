@@ -1,23 +1,25 @@
-package extension;
+package main.java;
 
 import org.nlogo.api.DefaultClassManager;
 import org.nlogo.api.PrimitiveManager;
-import primitives.go.DecayEpsilonCommand;
-import primitives.go.GetEpisodeCommand;
-import primitives.go.LearningCommand;
-import primitives.setup.ActionSelectionCommand;
-import primitives.setup.ActionSelectionEGreedyCommand;
-import primitives.setup.ActionSelectionRandomCommand;
-import primitives.setup.ActionsCommand;
-import primitives.setup.DiscountFactorCommand;
-import primitives.setup.IsEndEpisodeCommand;
-import primitives.setup.LambdaCommand;
-import primitives.setup.LearningRateCommand;
-import primitives.setup.RewardCommand;
-import primitives.setup.DefineAlgorithmCommand;
-import primitives.setup.SetupCommand;
-import primitives.setup.StateDefinitionCommand;
-import primitives.setup.StateDefinitionExtraCommand;
+
+import main.java.primitives.go.DecayEpsilonCommand;
+import main.java.primitives.go.GetEpisodeCommand;
+import main.java.primitives.go.GetQTableCommand;
+import main.java.primitives.go.LearningCommand;
+import main.java.primitives.setup.ActionSelectionCommand;
+import main.java.primitives.setup.ActionSelectionEGreedyCommand;
+import main.java.primitives.setup.ActionSelectionRandomCommand;
+import main.java.primitives.setup.ActionsCommand;
+import main.java.primitives.setup.DefineAlgorithmCommand;
+import main.java.primitives.setup.DiscountFactorCommand;
+import main.java.primitives.setup.IsEndEpisodeCommand;
+import main.java.primitives.setup.LambdaCommand;
+import main.java.primitives.setup.LearningRateCommand;
+import main.java.primitives.setup.RewardCommand;
+import main.java.primitives.setup.SetupCommand;
+import main.java.primitives.setup.StateDefinitionCommand;
+import main.java.primitives.setup.StateDefinitionExtraCommand;
 
 /**
  * Extension Commands Class
@@ -43,8 +45,9 @@ public class ExtensionCommands extends DefaultClassManager {
         primitiveManager.addPrimitive("setup", new SetupCommand());
         
         //COMANDOS GO
-        primitiveManager.addPrimitive("learning", new LearningCommand());
+        primitiveManager.addPrimitive("learning", new LearningCommand()); // TODO debug=true
         primitiveManager.addPrimitive("decay-epsilon", new DecayEpsilonCommand());
         primitiveManager.addPrimitive("get-episode", new GetEpisodeCommand());
+        primitiveManager.addPrimitive("get-qtable", new GetQTableCommand()); // TODO
     }
 }

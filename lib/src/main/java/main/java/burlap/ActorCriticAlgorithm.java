@@ -1,11 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package burlap;
+
+package main.java.burlap;
+
+import org.nlogo.api.AgentException;
+import org.nlogo.api.AnonymousCommand;
+import org.nlogo.api.Argument;
+import org.nlogo.api.Context;
+import org.nlogo.api.ExtensionException;
 
 import burlap.behavior.policy.EpsilonGreedy;
-import burlap.behavior.singleagent.learning.tdmethods.SarsaLam;
+import burlap.behavior.singleagent.Episode;
+import burlap.behavior.singleagent.learning.actorcritic.Actor;
+import burlap.behavior.singleagent.learning.actorcritic.ActorCritic;
+import burlap.behavior.singleagent.learning.actorcritic.actor.BoltzmannActor;
 import burlap.mdp.auxiliary.DomainGenerator;
 import burlap.mdp.core.Domain;
 import burlap.mdp.core.TerminalFunction;
@@ -15,32 +21,28 @@ import burlap.mdp.singleagent.SADomain;
 import burlap.mdp.singleagent.environment.SimulatedEnvironment;
 import burlap.mdp.singleagent.model.FactoredModel;
 import burlap.mdp.singleagent.model.RewardFunction;
+import burlap.statehashing.HashableState;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
-import model.AgentLearning;
-import model.Session;
-import org.nlogo.api.AgentException;
-import org.nlogo.api.AnonymousCommand;
-import org.nlogo.api.Argument;
-import org.nlogo.api.Context;
-import org.nlogo.api.ExtensionException;
-import primitives.go.DecayEpsilonCommand;
+import main.java.model.AgentLearning;
+import main.java.model.Session;
 
 /**
- * SARSA Algorithms Class
+ * ActorCritic Algorithm Class
  * @author Eloisa Bazzanella
- * @since  september, 2022
+ * @since  november, 2022
  */
-public class SarsaAlgorithm implements DomainGenerator {
+public class ActorCriticAlgorithm implements DomainGenerator {
     
     private Argument[]           args;
     private Context              context;
-    private SarsaLam            agentLearning;
+    private ActorCritic          agentLearning;
+    private CriticImplementation critic;
     private EpsilonGreedy        epsilon;
     private SimulatedEnvironment env;
     private State initialState;
-    private static SarsaAlgorithm instance = null;
+    private static ActorCriticAlgorithm instance = null;
 
-    public SarsaAlgorithm(Argument[] args, Context context) {
+    public ActorCriticAlgorithm(Argument[] args, Context context) {
         this.args = args;
         this.context = context;
         this.epsilon = null;
@@ -50,9 +52,9 @@ public class SarsaAlgorithm implements DomainGenerator {
         instance = null;
     }
     
-    public static SarsaAlgorithm getInstance(Argument[] args, Context context) {
+    public static ActorCriticAlgorithm getInstance(Argument[] args, Context context) {
         if (instance == null) {
-            instance = new SarsaAlgorithm(args, context);
+            instance = new ActorCriticAlgorithm(args, context);
         }
         return instance;
     }
@@ -60,7 +62,7 @@ public class SarsaAlgorithm implements DomainGenerator {
     public void setup() throws AgentException {
         AgentLearning agent =  Session.getInstance().getAgent(context.getAgent());
         
-        SarsaAlgorithm gen = new SarsaAlgorithm(args, context);
+        ActorCriticAlgorithm gen = new ActorCriticAlgorithm(args, context);
         
         SADomain domain = new SADomain();
         
@@ -78,39 +80,36 @@ public class SarsaAlgorithm implements DomainGenerator {
         
         env = new SimulatedEnvironment(domain, initialState);
        
-        agentLearning = new SarsaLam(domain, agent.discountFactor, 
-                new SimpleHashableStateFactory(), 0, agent.learningRate, agent.lambda);
+        Actor actor = new BoltzmannActor(domain, new SimpleHashableStateFactory(), agent.learningRate);
+        critic = new CriticImplementation(agent.discountFactor, new SimpleHashableStateFactory(), agent.learningRate, 0, agent.lambda);
         
-        stateModel.setSarsa(agentLearning);
-        //STATEMODEL
+        stateModel.setCritic(critic);
         
-        if(agent.actionSelection.method.equals("e-greedy")) {
-            epsilon = new EpsilonGreedy(agentLearning, agent.actionSelection.roulette);
-            agentLearning.setLearningPolicy(epsilon);
-        }
+        agentLearning = new ActorCritic(actor, critic);
     }
     
     public void go(Argument[] args, Context context) throws ExtensionException {
         AgentLearning agent =  Session.getInstance().getAgent(context.getAgent());
        
-        agentLearning.runLearningEpisode(env, -1);     
-
-        if(agent.actionSelection.method.equals("e-greedy")) { 
-            new DecayEpsilonCommand().perform(args, context);
-            epsilon.setEpsilon(agent.actionSelection.roulette); 
-            System.out.println("NEW EPSILON:" + epsilon.getEpsilon());
-        }
+        System.out.println("EPISODIO: " + agent.episode); 
         
+        Episode e = agentLearning.runLearningEpisode(env, -1);     
         agent.setEpisode();
         env.resetEnvironment(); 
+        System.out.println(e.actionString());
+        
+        for(HashableState v : critic.vIndex.keySet()) {
+            String s = "";
+            for(Object a : v.s().variableKeys()) {
+                s += a + ": " + v.s().get(a) + ", ";
+            }
+            System.out.println(s + ": " + critic.getV(v).v);
+        }
         System.out.println("-------------------------------");
-        System.out.println("EPISODIO: " + agent.episode);  
-        //agentLearning.writeQTable("qtable.txt");
     }
     
     @Override
     public Domain generateDomain() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
-    
 }

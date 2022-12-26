@@ -1,12 +1,12 @@
-package primitives.setup;
+package main.java.primitives.setup;
 
 import org.nlogo.api.Argument;
 import org.nlogo.api.ExtensionException;
 import org.nlogo.core.Syntax;
 import org.nlogo.core.SyntaxJ;
 
-import model.AgentLearning;
-import model.Session;
+import main.java.model.AgentLearning;
+import main.java.model.Session;
 
 public class LearningRateCommand implements org.nlogo.api.Command {
 

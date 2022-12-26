@@ -1,4 +1,10 @@
-package burlap;
+package main.java.burlap;
+
+import org.nlogo.api.AgentException;
+import org.nlogo.api.AnonymousCommand;
+import org.nlogo.api.Argument;
+import org.nlogo.api.Context;
+import org.nlogo.api.ExtensionException;
 
 import burlap.behavior.policy.EpsilonGreedy;
 import burlap.behavior.singleagent.learning.tdmethods.QLearning;
@@ -12,14 +18,9 @@ import burlap.mdp.singleagent.environment.SimulatedEnvironment;
 import burlap.mdp.singleagent.model.FactoredModel;
 import burlap.mdp.singleagent.model.RewardFunction;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
-import model.AgentLearning;
-import model.Session;
-import org.nlogo.api.AgentException;
-import org.nlogo.api.AnonymousCommand;
-import org.nlogo.api.Argument;
-import org.nlogo.api.Context;
-import org.nlogo.api.ExtensionException;
-import primitives.go.DecayEpsilonCommand;
+import main.java.model.AgentLearning;
+import main.java.model.Session;
+import main.java.primitives.go.DecayEpsilonCommand;
 
 /**
  * Learning Algorithms Class

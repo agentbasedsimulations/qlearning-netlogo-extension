@@ -1,23 +1,23 @@
-package burlap;
+package main.java.burlap;
 
-import burlap.behavior.singleagent.learning.actorcritic.ActorCritic;
-import burlap.behavior.singleagent.learning.tdmethods.QLearning;
-import burlap.behavior.singleagent.learning.tdmethods.SarsaLam;
-import burlap.behavior.valuefunction.QValue;
-import burlap.mdp.core.StateTransitionProb;
-import burlap.mdp.core.action.Action;
-import burlap.mdp.core.state.State;
-import burlap.mdp.singleagent.model.statemodel.FullStateModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.AgentLearning;
-import model.Session;
+
 import org.nlogo.api.AgentException;
 import org.nlogo.api.AnonymousCommand;
 import org.nlogo.api.Argument;
 import org.nlogo.api.Context;
+
+import burlap.behavior.singleagent.learning.tdmethods.QLearning;
+import burlap.behavior.singleagent.learning.tdmethods.SarsaLam;
+import burlap.mdp.core.StateTransitionProb;
+import burlap.mdp.core.action.Action;
+import burlap.mdp.core.state.State;
+import burlap.mdp.singleagent.model.statemodel.FullStateModel;
+import main.java.model.AgentLearning;
+import main.java.model.Session;
 
 /**
  * Agent State Model Class

@@ -1,4 +1,8 @@
-package burlap;
+package main.java.burlap;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 import burlap.behavior.learningrate.ConstantLR;
 import burlap.behavior.learningrate.LearningRate;
@@ -12,9 +16,6 @@ import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;
 import burlap.statehashing.HashableState;
 import burlap.statehashing.HashableStateFactory;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 
 /**
 * @author James MacGlashan

@@ -1,22 +1,23 @@
-package primitives.go;
+package main.java.primitives.go;
 
-import burlap.ActorCriticAlgorithm;
 import org.nlogo.api.Argument;
 import org.nlogo.api.Context;
 import org.nlogo.api.ExtensionException;
 import org.nlogo.core.Syntax;
 import org.nlogo.core.SyntaxJ;
 
-import burlap.QLearningAlgorithm;
-import burlap.SarsaAlgorithm;
-import model.AgentLearning;
-import model.Session;
+import main.java.burlap.ActorCriticAlgorithm;
+import main.java.burlap.QLearningAlgorithm;
+import main.java.burlap.SarsaAlgorithm;
+import main.java.model.AgentLearning;
+import main.java.model.Session;
 
 public class LearningCommand implements org.nlogo.api.Command {
 
     @Override
     public Syntax getSyntax() {
-            return SyntaxJ.commandSyntax();
+    	return SyntaxJ.commandSyntax();
+    	// return SyntaxJ.commandSyntax(new int[] {Syntax.BooleanType()}); TODO allow the 'debug' argument 
     }
 
     @Override
@@ -33,5 +34,10 @@ public class LearningCommand implements org.nlogo.api.Command {
             ActorCriticAlgorithm learning = ActorCriticAlgorithm.getInstance(args, context);
             learning.go(args, context);
         }
+        
+//        TODO allow the 'debug' argument
+//        if(args.length > 0 && args[0].getBooleanValue()) {
+//        	throw new ExtensionException("Debug=true is not supported yet"); // TODO
+//        }
     }
 }

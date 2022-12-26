@@ -1,17 +1,19 @@
-package burlap;
+package main.java.burlap;
 
-import burlap.mdp.core.state.MutableState;
-import burlap.mdp.core.state.State;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.AgentLearning;
-import model.Session;
+
 import org.nlogo.api.AgentException;
 import org.nlogo.api.Context;
+
+import burlap.mdp.core.state.MutableState;
+import burlap.mdp.core.state.State;
+import main.java.model.AgentLearning;
+import main.java.model.Session;
 
 /**
  * Agent State Class

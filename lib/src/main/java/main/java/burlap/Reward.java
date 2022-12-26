@@ -1,12 +1,13 @@
-package burlap;
+package main.java.burlap;
+
+import org.nlogo.api.Argument;
+import org.nlogo.api.Context;
 
 import burlap.mdp.core.action.Action;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.model.RewardFunction;
-import model.AgentLearning;
-import model.Session;
-import org.nlogo.api.Argument;
-import org.nlogo.api.Context;
+import main.java.model.AgentLearning;
+import main.java.model.Session;
 
 /**
  * Reward Class
