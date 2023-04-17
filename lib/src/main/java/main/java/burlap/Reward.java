@@ -27,7 +27,6 @@ public class Reward implements RewardFunction {
     public double reward(State s, Action a, State sprime) {
         AgentLearning agent =  Session.getInstance().getAgent(context.getAgent());
         Double reward = (Double) agent.rewardFunc.report(context, args);
-        
         System.out.println("REWARD: " + reward);
         return reward;
     }

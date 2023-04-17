@@ -95,6 +95,7 @@ public class ActorCriticAlgorithm implements DomainGenerator {
         
         Episode e = agentLearning.runLearningEpisode(env, -1);     
         agent.setEpisode();
+//        agent.resetEpisode();
         env.resetEnvironment(); 
         System.out.println(e.actionString());
         

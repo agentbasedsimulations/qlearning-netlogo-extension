@@ -70,4 +70,11 @@ public class AgentState implements MutableState {
         
         return new ArrayList<Object>(vars);
     }
+
+	@Override
+	public String toString() {
+	return "Estado:" + state ;
+	}
+    
+   
 }

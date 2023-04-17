@@ -12,10 +12,12 @@ import org.nlogo.api.Context;
 
 import burlap.behavior.singleagent.learning.tdmethods.QLearning;
 import burlap.behavior.singleagent.learning.tdmethods.SarsaLam;
+import burlap.behavior.valuefunction.QValue;
 import burlap.mdp.core.StateTransitionProb;
 import burlap.mdp.core.action.Action;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.model.statemodel.FullStateModel;
+import main.java.burlap.adapters.QLearningAdapter;
 import main.java.model.AgentLearning;
 import main.java.model.Session;
 
@@ -53,20 +55,40 @@ public class AgentStateModel implements FullStateModel {
         
         AgentLearning agent =  Session.getInstance().getAgent(context.getAgent());
         String actionExecute = a.actionName();
+       
         for(AnonymousCommand action : agent.actions) {
             if(actionExecute.equals(action.toString())){
                 action.perform(context, args);
+                
             }
         }
+      
+        QLearningAdapter qlAdapter = new QLearningAdapter(null, 0, null, 0, 0);
+      {
+          try {
+			qlAdapter.getQtable(agent.actions);
+			   System.out.println( state.toString());
+//		          System.out.println("Acao: " + qvalue.a.actionName() + " , Valor: " + qvalue.q);
+		} catch (AgentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         
+      }
+      
+
+    	
         
         try {
             state = new AgentState(context);
         } catch (AgentException ex) {
             Logger.getLogger(AgentStateModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+       
         return state;
     }
+    
+
     
     public void setQLearning(QLearning learning) {
         this.learning = learning;
@@ -80,3 +102,19 @@ public class AgentStateModel implements FullStateModel {
         this.critic = critic;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

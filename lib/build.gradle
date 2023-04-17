@@ -72,7 +72,7 @@ tasks.register('install-on-netlogo') {
    dependsOn(jar)
    doLast {
    	    def jarsource = 'build/libs/'+EXTENSION_NAME+'.jar'
-   	    def jartarget = NETLOGO_USER_DIR+'/extensions/'+EXTENSION_NAME
+   	    def jartarget = NETLOGO_USER_DIR +'/extensions/'+EXTENSION_NAME
    	    println '**************'
    		println 'copying '+jarsource+' to '+jartarget
    		println '**************'

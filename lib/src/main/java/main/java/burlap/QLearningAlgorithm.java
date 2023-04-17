@@ -61,6 +61,8 @@ public class QLearningAlgorithm implements DomainGenerator {
         
         SADomain domain = new SADomain();
         
+   
+        
         for(AnonymousCommand action : agent.actions) {
             domain.addActionType(new UniversalActionType(action.toString()));
         }
@@ -86,6 +88,8 @@ public class QLearningAlgorithm implements DomainGenerator {
         }
     }
     
+    
+    
     public void go(Argument[] args, Context context) throws ExtensionException {
         AgentLearning agent =  Session.getInstance().getAgent(context.getAgent());
         
@@ -98,7 +102,9 @@ public class QLearningAlgorithm implements DomainGenerator {
         }
         
         agent.setEpisode();
+        agent.resetEpisode(context,args);
         env.resetEnvironment(); 
+    
         System.out.println("-------------------------------");
         System.out.println("EPISODIO: " + agent.episode);            
     }

@@ -10,8 +10,11 @@ import org.nlogo.agent.World;
 import org.nlogo.api.AgentException;
 import org.nlogo.api.AnonymousCommand;
 import org.nlogo.api.AnonymousReporter;
+import org.nlogo.api.Argument;
 import org.nlogo.api.Context;
 import org.nlogo.api.ExtensionException;
+
+import main.java.burlap.IsEndEpisode;
 
 /**
  * Agent Learning Class
@@ -22,18 +25,19 @@ public class AgentLearning {
     	
     public StateDefinition stateDef       = null;
     public List<AnonymousCommand> actions = new ArrayList();
-    
+    public AnonymousCommand resetEpisode = null;
     public AnonymousReporter rewardFunc    = null;
     public AnonymousReporter endEpisode    = null;
     public ActionSelection actionSelection = new ActionSelection();
-
     public String algorithm      = "";
     public Double learningRate   = -1.00;
     public Double discountFactor = -1.00;
     public Double lambda         = -1.00;
     public int episode           = 0; 
+   
     
     public org.nlogo.api.Agent agent = null;
+	
     
     public void setDiscountFactor(Double f) throws ExtensionException {
         if(f > 1 || f < 0) {
@@ -80,5 +84,14 @@ public class AgentLearning {
         }
 
         return state;
-    }
+    }           
+
+	public void resetEpisode(Context context, Argument[] args) {
+		 AgentLearning agent =  Session.getInstance().getAgent(context.getAgent());
+		 resetEpisode.perform(context,args);
+	}
+
+
+	
 }
+	

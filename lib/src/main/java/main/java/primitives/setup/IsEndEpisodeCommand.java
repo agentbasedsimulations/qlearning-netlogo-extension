@@ -23,5 +23,6 @@ public class IsEndEpisodeCommand implements org.nlogo.api.Command {
         }
 
         agent.endEpisode = args[0].getReporter();
-    }
+        agent.resetEpisode = args[1].getCommand();
+        }
 }
