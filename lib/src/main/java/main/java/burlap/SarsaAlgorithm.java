@@ -103,10 +103,11 @@ public class SarsaAlgorithm implements DomainGenerator {
         }
         
         agent.setEpisode();
+        agent.resetEpisode(context,args);
         env.resetEnvironment(); 
         System.out.println("-------------------------------");
         System.out.println("EPISODIO: " + agent.episode);  
-        //agentLearning.writeQTable("qtable.txt");
+       // agentLearning.writeQTable("qtable.txt");
     }
     
     @Override

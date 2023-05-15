@@ -10,6 +10,7 @@ import org.nlogo.api.AnonymousCommand;
 import org.nlogo.api.Argument;
 import org.nlogo.api.Context;
 
+import burlap.behavior.singleagent.Episode;
 import burlap.behavior.singleagent.learning.tdmethods.QLearning;
 import burlap.behavior.singleagent.learning.tdmethods.SarsaLam;
 import burlap.behavior.valuefunction.QValue;
@@ -17,6 +18,7 @@ import burlap.mdp.core.StateTransitionProb;
 import burlap.mdp.core.action.Action;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.model.statemodel.FullStateModel;
+import burlap.statehashing.HashableState;
 import main.java.burlap.adapters.QLearningAdapter;
 import main.java.model.AgentLearning;
 import main.java.model.Session;
@@ -58,26 +60,50 @@ public class AgentStateModel implements FullStateModel {
        
         for(AnonymousCommand action : agent.actions) {
             if(actionExecute.equals(action.toString())){
-                action.perform(context, args);
-                
+                action.perform(context, args);  
             }
         }
       
-        QLearningAdapter qlAdapter = new QLearningAdapter(null, 0, null, 0, 0);
-      {
-          try {
-			qlAdapter.getQtable(agent.actions);
-			   System.out.println( state.toString());
-//		          System.out.println("Acao: " + qvalue.a.actionName() + " , Valor: " + qvalue.q);
-		} catch (AgentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-         
+        if(agent.algorithm.equals("qlearning")) {
+        	System.out.println( state.toString());
+            for (QValue qvalue : learning.qValues(state)) {
+                System.out.println("action: " + qvalue.a.actionName() + " , value: " + qvalue.q);  
+            }      
       }
+        
+        
+        
+        if(agent.algorithm.equals("sarsa-lambda")) {
+        	System.out.println( state.toString());
+        	for(QValue qvalue : sarsa.qValues(state)) {
+                System.out.println("action: " + qvalue.a.actionName() + " , value: " + qvalue.q);
+        	}
+        }
+            
+            
+            
+        
+        
+        
+        if(agent.algorithm.equals("actor-critic")) {
+           
+            for(HashableState v : critic.vIndex.keySet()) {
+                String ss = "";
+                for(Object aa : v.s().variableKeys()) {
+                    ss += aa + ": " + v.s().get(a) + ", ";
+                }
+                System.out.println(s + ": " + critic.getV(v).v);
+            }
+            System.out.println("-------------------------------");
+        }
+           
+            
+            	
+        	
+        
+    	
       
 
-    	
         
         try {
             state = new AgentState(context);

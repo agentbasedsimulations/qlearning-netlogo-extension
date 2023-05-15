@@ -24,15 +24,15 @@ private QLearning  learning;
 		super(domain, gamma, hashingFactory, qInit, learningRate);
 		// TODO Auto-generated constructor stub
 	}
-	public String getQtable(List<AnonymousCommand> actions ) throws AgentException{
-		//usar o objeto q function(hash map)
-		for(int i = 0 ; i < qFunction.size(); i++) {
-			 //for (QValue qvalue : learning.qValues(as.s))
-			//System.out.println(actions.toString());
-			System.out.println(qFunction.get(actions));
-		}
-		
-		return super.toString();	
-	}
+//	public String getQtable(List<AnonymousCommand> actions ) throws AgentException{
+//		//usar o objeto q function(hash map)
+//		for(int i = 0 ; i < qFunction.size(); i++) {
+//			 for (QValue qvalue : learning.qValues(as.s))
+//			System.out.println(actions.toString());
+//		//	System.out.println(qFunction.get(actions));
+//		}
+//		
+//		return super.toString();	
+//	}
 
 }
