@@ -11,7 +11,6 @@ import org.nlogo.api.Context;
 import org.nlogo.api.ExtensionException;
 
 import burlap.behavior.policy.EpsilonGreedy;
-import burlap.behavior.singleagent.learning.tdmethods.SarsaLam;
 import burlap.mdp.auxiliary.DomainGenerator;
 import burlap.mdp.core.Domain;
 import burlap.mdp.core.TerminalFunction;
@@ -22,6 +21,7 @@ import burlap.mdp.singleagent.environment.SimulatedEnvironment;
 import burlap.mdp.singleagent.model.FactoredModel;
 import burlap.mdp.singleagent.model.RewardFunction;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
+import main.java.burlap.adapters.SarsaLamAdapter;
 import main.java.model.AgentLearning;
 import main.java.model.Session;
 import main.java.primitives.go.DecayEpsilonCommand;
@@ -35,7 +35,7 @@ public class SarsaAlgorithm implements DomainGenerator {
     
     private Argument[]           args;
     private Context              context;
-    private SarsaLam            agentLearning;
+    private SarsaLamAdapter      agentLearning;
     private EpsilonGreedy        epsilon;
     private SimulatedEnvironment env;
     private State initialState;
@@ -79,7 +79,7 @@ public class SarsaAlgorithm implements DomainGenerator {
         
         env = new SimulatedEnvironment(domain, initialState);
        
-        agentLearning = new SarsaLam(domain, agent.discountFactor, 
+        agentLearning = new SarsaLamAdapter(domain, agent.discountFactor, 
                 new SimpleHashableStateFactory(), 0, agent.learningRate, agent.lambda);
         
         stateModel.setSarsa(agentLearning);
@@ -99,20 +99,20 @@ public class SarsaAlgorithm implements DomainGenerator {
         if(agent.actionSelection.method.equals("e-greedy")) { 
             new DecayEpsilonCommand().perform(args, context);
             epsilon.setEpsilon(agent.actionSelection.roulette); 
-            System.out.println("NEW EPSILON:" + epsilon.getEpsilon());
         }
         
         agent.setEpisode();
         agent.resetEpisode(context,args);
         env.resetEnvironment(); 
-        System.out.println("-------------------------------");
-        System.out.println("EPISODIO: " + agent.episode);  
-       // agentLearning.writeQTable("qtable.txt");
     }
     
     @Override
     public Domain generateDomain() {
         throw new UnsupportedOperationException("Not supported yet."); 
+    }
+    
+    public String getLearningDetails() {
+    	return agentLearning.getLearningDetails();
     }
     
 }

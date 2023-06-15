@@ -23,6 +23,7 @@ import burlap.mdp.singleagent.model.FactoredModel;
 import burlap.mdp.singleagent.model.RewardFunction;
 import burlap.statehashing.HashableState;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
+import main.java.burlap.util.BurlapUtils;
 import main.java.model.AgentLearning;
 import main.java.model.Session;
 
@@ -35,7 +36,7 @@ public class ActorCriticAlgorithm implements DomainGenerator {
     
     private Argument[]           args;
     private Context              context;
-    private ActorCritic          agentLearning;
+    private ActorCritic			 agentLearning;
     private CriticImplementation critic;
     private EpsilonGreedy        epsilon;
     private SimulatedEnvironment env;
@@ -95,12 +96,13 @@ public class ActorCriticAlgorithm implements DomainGenerator {
         
         Episode e = agentLearning.runLearningEpisode(env, -1);     
         agent.setEpisode();
-        agent.resetEpisode(context,args);
+        agent.resetEpisode(context,args); // TODO
         env.resetEnvironment(); 
+        
         System.out.println(e.actionString());
         
         for(HashableState v : critic.vIndex.keySet()) {
-            String s = "";
+            String s = "xpto";
             for(Object a : v.s().variableKeys()) {
                 s += a + ": " + v.s().get(a) + ", ";
             }
@@ -112,5 +114,18 @@ public class ActorCriticAlgorithm implements DomainGenerator {
     @Override
     public Domain generateDomain() {
         throw new UnsupportedOperationException("Not supported yet."); 
+    }
+    
+    public String getLearningDetails() {
+    	StringBuilder sb = new StringBuilder("Actor-Critic Details").append(System.lineSeparator());
+		sb.append("learning rate: ").append(BurlapUtils.toString(critic.getLearningRate())).append(System.lineSeparator());
+		sb.append("discount factor: ").append(critic.getGamma()).append(System.lineSeparator());
+		sb.append("lambda: ").append(critic.getLambda()).append(System.lineSeparator());
+		sb.append("utility values (state=value pairs)").append(System.lineSeparator());
+
+		for(HashableState v : critic.vIndex.keySet()) {
+			sb.append(v.s()).append("=").append(critic.getV(v).v).append(System.lineSeparator());
+        }
+		return sb.toString();
     }
 }

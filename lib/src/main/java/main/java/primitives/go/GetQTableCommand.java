@@ -6,6 +6,12 @@ import org.nlogo.api.ExtensionException;
 import org.nlogo.core.Syntax;
 import org.nlogo.core.SyntaxJ;
 
+import main.java.burlap.ActorCriticAlgorithm;
+import main.java.burlap.QLearningAlgorithm;
+import main.java.burlap.SarsaAlgorithm;
+import main.java.model.AgentLearning;
+import main.java.model.Session;
+
 public class GetQTableCommand implements org.nlogo.api.Reporter {
 
 	@Override
@@ -15,24 +21,21 @@ public class GetQTableCommand implements org.nlogo.api.Reporter {
 
 	@Override
 	public Object report(Argument[] args, Context context) throws ExtensionException {
-		throw new ExtensionException("Not implemented yet"); // TODO
+		AgentLearning agent = Session.getInstance().getAgent(context.getAgent());
 		
-//		LinkedHashMap<String, LinkedHashMap<String, Double>> qTable = Session.getInstance().getAgent(context.getAgent()).getQTable();
-//		
-//		    String ret = "--------- Q-Table --------- \n";
-//		    
-//		    for (Map.Entry<String, LinkedHashMap<String, Double>> entry : qTable.entrySet()) {
-//		    	LinkedHashMap<String, Double> qList = entry.getValue();
-//		    	ret += entry.getKey() + " -> ";
-//		    	
-//		    	for (Map.Entry<String, Double> entryList : qList.entrySet()) {
-//		    		ret += entryList.getKey().toString() + ": " + entryList.getValue() + " | "; 
-//		    	}
-//		    	ret += "\n";
-//		    }
-//		    
-//		    ret += "---------------------------------\n";
-//		    
-//		    return ret;
+		StringBuilder sb = new StringBuilder("Agent: ").append(agent.agent.id()).append("\n");
+		
+		if(agent.algorithm.equals("qlearning")) {
+            QLearningAlgorithm learning = QLearningAlgorithm.getInstance(args, context);
+            sb.append(learning.getLearningDetails());
+        } else if(agent.algorithm.equals("sarsa-lambda")) {
+            SarsaAlgorithm learning = SarsaAlgorithm.getInstance(args, context);
+            sb.append(learning.getLearningDetails());
+        } else if(agent.algorithm.equals("actor-critic")) {
+        	ActorCriticAlgorithm learning = ActorCriticAlgorithm.getInstance(args, context);
+            sb.append(learning.getLearningDetails());
+        }
+
+        return sb.toString();
 	 }
 }

@@ -88,7 +88,7 @@ public class AgentStateModel implements FullStateModel {
         if(agent.algorithm.equals("actor-critic")) {
            
             for(HashableState v : critic.vIndex.keySet()) {
-                String ss = "";
+                String ss = "asm";
                 for(Object aa : v.s().variableKeys()) {
                     ss += aa + ": " + v.s().get(a) + ", ";
                 }

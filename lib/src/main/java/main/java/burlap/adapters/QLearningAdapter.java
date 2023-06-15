@@ -1,38 +1,56 @@
 package main.java.burlap.adapters;
 
-import burlap.behavior.singleagent.learning.tdmethods.QLearning;
-import burlap.behavior.valuefunction.QValue;
-import burlap.mdp.singleagent.SADomain;
-import burlap.statehashing.HashableStateFactory;
-import main.java.burlap.AgentState;
-import main.java.model.AgentLearning;
-
 import java.util.List;
 
-import org.nlogo.api.AgentException;
-import org.nlogo.api.AnonymousCommand;
-import org.nlogo.api.Context;
+import burlap.behavior.policy.Policy;
+import burlap.behavior.singleagent.learning.tdmethods.QLearning;
+import burlap.behavior.valuefunction.QFunction;
+import burlap.behavior.valuefunction.QValue;
+import burlap.mdp.core.state.State;
+import burlap.mdp.singleagent.SADomain;
+import burlap.statehashing.HashableState;
+import burlap.statehashing.HashableStateFactory;
+import main.java.burlap.util.BurlapUtils;
 
 public class QLearningAdapter extends QLearning {
-private AgentLearning al = new AgentLearning();
-private Context context;
-private QLearning  learning;
 
+	public QLearningAdapter(SADomain domain, double gamma, HashableStateFactory hashingFactory, double qInit,
+			double learningRate, int maxEpisodeSize) {
+		super(domain, gamma, hashingFactory, qInit, learningRate, maxEpisodeSize);
+	}
+
+	public QLearningAdapter(SADomain domain, double gamma, HashableStateFactory hashingFactory, double qInit,
+			double learningRate, Policy learningPolicy, int maxEpisodeSize) {
+		super(domain, gamma, hashingFactory, qInit, learningRate, learningPolicy, maxEpisodeSize);
+	}
 
 	public QLearningAdapter(SADomain domain, double gamma, HashableStateFactory hashingFactory, double qInit,
 			double learningRate) {
 		super(domain, gamma, hashingFactory, qInit, learningRate);
-		// TODO Auto-generated constructor stub
 	}
-//	public String getQtable(List<AnonymousCommand> actions ) throws AgentException{
-//		//usar o objeto q function(hash map)
-//		for(int i = 0 ; i < qFunction.size(); i++) {
-//			 for (QValue qvalue : learning.qValues(as.s))
-//			System.out.println(actions.toString());
-//		//	System.out.println(qFunction.get(actions));
-//		}
-//		
-//		return super.toString();	
-//	}
 
+	public QLearningAdapter(SADomain domain, double gamma, HashableStateFactory hashingFactory, QFunction qInit,
+			double learningRate, Policy learningPolicy, int maxEpisodeSize) {
+		super(domain, gamma, hashingFactory, qInit, learningRate, learningPolicy, maxEpisodeSize);
+	}
+
+	
+	public String getLearningDetails() {
+		StringBuilder sb = new StringBuilder("Q-Learning Details").append(System.lineSeparator());
+		sb.append("learning rate: ").append(BurlapUtils.toString(super.learningRate)).append(System.lineSeparator());
+		sb.append("discount factor: ").append(super.gamma).append(System.lineSeparator());
+		sb.append("Q table").append(System.lineSeparator());
+
+		for (HashableState hs : super.qFunction.keySet()) {
+			State s = hs.s();
+			sb.append("state: ").append(s).append("; actions values: ");
+			
+			List<QValue> values = super.qFunction.get(hs).qEntry; // QValue is a tuple: state s, action a, qValue q
+			for (QValue qv : values) {
+				sb.append(qv.a).append("=").append(qv.q).append("; ");
+			}
+			sb.append(System.lineSeparator());
+		}
+		return sb.toString();
+	}
 }

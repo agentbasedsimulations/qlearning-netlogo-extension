@@ -148,7 +148,7 @@ public class CriticImplementation extends MDPSolver implements Critic, ValueFunc
     /**
      * @author James MacGlashan
      */
-    class VValue{
+    public static class VValue{
 
         public double v;
 
@@ -174,6 +174,18 @@ public class CriticImplementation extends MDPSolver implements Critic, ValueFunc
             this.eligibility = eligibility;
             this.v = v;
         }
+    }
+    
+    public LearningRate getLearningRate() {
+    	return this.learningRate;
+    }
+    
+    public double getLambda() {
+    	return this.lambda;
+    }
+    
+    public double getGamma() {
+    	return this.gamma;
     }
 
 }
